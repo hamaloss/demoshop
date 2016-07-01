@@ -30,7 +30,7 @@ public class SeleniumTest_ extends TestCase {
     
     @Parameterized.Parameters
     public static Collection data() {
-    	return Arrays.asList(new Object[][]{{"chrome"},{"firefox"}});
+    	return Arrays.asList(new Object[][]{{"chrome"}});
     }
 
     @Before
