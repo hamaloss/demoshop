@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -80,17 +81,25 @@ public class OrderController {
 			order.setItems(cart.getItems());
 			return new ModelAndView("order", "order", order);
 		}
-		try {
-			Map<String, String> vars = new HashMap<String, String>();
-			vars.put("id", UUID.randomUUID().toString());
-			vars.put("username", userName);
-			Order o = new Order(order, cart.getItems());
-			o.setUserName(userName);
-			restTemplate.postForObject("http://localhost:7890", o, Order.class, vars);
-		} catch (Exception e) {
-			LOGGER.error("Error sending order: "+e.getMessage());
-			throw new ShopRestException(e.getMessage(), 500);
+
+		Map<String, String> vars = new HashMap<String, String>();
+		vars.put("id", UUID.randomUUID().toString());
+		vars.put("username", userName);
+		Order o = new Order(order, cart.getItems());
+		o.setUserName(userName);
+		
+		ResponseEntity<String> response = restTemplate.postForEntity(
+				"http://localhost:7890", o, String.class, vars);
+		if (response.getStatusCode().is2xxSuccessful()) {
+			LOGGER.info("Order sent. Message: "+response.getBody());
+		} else {
+			LOGGER.error("Error sending order. Satus code: "
+					+ response.getStatusCode().toString() + " message: "
+					+ response.getBody());
+			throw new ShopRestException(
+					"Error sending order to backend system", 500);
 		}
+
 		return new ModelAndView("order_sent", "order", order);
 	}
 	
