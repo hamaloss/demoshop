@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+ 
+</head>
+<body>
+ 
+<div class="container">
+    <div th:fragment="header">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#" th:href="@{/}">Home</a>
+                    
+                    	<ul class="nav navbar-nav">
+                        	<li><a href="#" th:href="@{/products}">Products</a></li>
+                        	<li><a th:if="${#authorization.expression('hasAuthority(''USER'')')}" th:href="@{/product/new}">Create Product</a></li>
+                        	<li><a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" th:href="@{/users}">Users</a></li>
+                        	<li><a th:if="${#authorization.expression('isAuthenticated()')} == true" th:href="@{/cart/view}">Shopping Cart</a></li>
+                        	<li><a th:if="${#authorization.expression('isAuthenticated()')} == false" th:href="@{/login}">Login / Register</a></li>
+                        	<li><a th:if="${#authorization.expression('isAuthenticated()')} == true" th:href="@{/logout}">Logout</a></li>
+                    	</ul>	
+ 					
+                </div>
+            </div>
+        </nav>
+     </div>
+</div>
+</body>
+</html>

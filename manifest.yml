@@ -1,0 +1,13 @@
+---
+applications:
+- name: main_app
+  buildpack: liberty-for-java
+  memory: 512M
+  instances: 1
+  host: tietopoc
+  path: target/demoshop-0.0.1-SNAPSHOT.jar
+  services:
+    - main_app-db
+    - main_app-redis
+  env:
+    SPRING_PROFILES_ACTIVE: cloud

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Demo Shop</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+    <h2>Send order</h2>
+    <div th:if="${not #lists.isEmpty(order.items)}">
+    	<table class="table table-striped">
+    		<tr>
+    			<th>Count</th>
+    			<th>Product name</th>
+    			<th>Price (Single item price)</th>
+    		</tr>
+    		<tr th:each="item : ${order.items}">
+    			<td th:text="${item.count}">count</td>
+    			<td><a th:href="${ '/product/' + item.product.id}" th:text="${item.product.name}">product name</a></td>
+    			<td th:text="(${item.product.price * item.count}) + '€ ('+(${item.product.price})+'€)'">product price</td>
+    		</tr>
+    	</table>
+    </div>
+    <div>
+    	<form class="form-horizontal" th:object="${order}" th:action="@{/order/create}" method="post">
+    	<div class="form-group">
+    		<label class="col-sm-2 control-label">Name</label>
+    		<div class="col-sm-5">
+    			<input type="text" class="form-control" th:field="*{name}"/>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label class="col-sm-2 control-label">Street Address</label>
+    		<div class="col-sm-5">
+    			<input type="text" class="form-control" th:field="*{streetAddress}"/>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label class="col-sm-2 control-label">Postnumber</label>
+    		<div class="col-sm-5">
+    			<input type="text" class="form-control" th:field="*{postNumber}"/>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label class="col-sm-2 control-label">City</label>
+    		<div class="col-sm-5">
+    			<input type="text" class="form-control" th:field="*{city}"/>
+    		</div>
+    	</div>
+    	<div class="row">
+            <button type="submit" class="btn btn-default">Order</button>
+        </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
