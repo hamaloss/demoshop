@@ -67,6 +67,7 @@ public class OrderController {
 	
 	@RequestMapping(value = "order/create", method = RequestMethod.POST)
 	public ModelAndView handleOrderForm(@Valid @ModelAttribute("order") OrderForm order, BindingResult bindingResult, HttpServletRequest req, Principal principal) {
+		String orderUrl = System.getenv("ORDER_URL");
 		HttpSession session = req.getSession();
 		ShoppingCart cart = null;
 		String userName = principal.getName();
@@ -87,11 +88,15 @@ public class OrderController {
 		vars.put("username", userName);
 		Order o = new Order(order, cart.getItems());
 		o.setUserName(userName);
-		
+		String orderResult = null;
 		ResponseEntity<String> response = restTemplate.postForEntity(
-				"http://localhost:7890", o, String.class, vars);
+				orderUrl, o, String.class, vars);
 		if (response.getStatusCode().is2xxSuccessful()) {
 			LOGGER.info("Order sent. Message: "+response.getBody());
+			orderResult = "Order successfully sent";
+			LOGGER.info("Deleting shopping cart");
+			cartService.deleteShoppingCart(cart.getId());
+			session.setAttribute("cartid", null);
 		} else {
 			LOGGER.error("Error sending order. Satus code: "
 					+ response.getStatusCode().toString() + " message: "
@@ -100,7 +105,7 @@ public class OrderController {
 					"Error sending order to backend system", 500);
 		}
 
-		return new ModelAndView("order_sent", "order", order);
+		return new ModelAndView("order_sent", "result", orderResult);
 	}
 	
 }
