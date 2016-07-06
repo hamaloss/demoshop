@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -45,6 +46,9 @@ public class OrderController {
 		this.userService = u;
 	}
 	
+	@Value("${ORDER_HOST}")
+	private String orderHost;
+	
 	@RequestMapping("order/view")
 	public ModelAndView orderCart(HttpServletRequest req, Principal principal) {
 		HttpSession session = req.getSession();
@@ -67,7 +71,8 @@ public class OrderController {
 	
 	@RequestMapping(value = "order/create", method = RequestMethod.POST)
 	public ModelAndView handleOrderForm(@Valid @ModelAttribute("order") OrderForm order, BindingResult bindingResult, HttpServletRequest req, Principal principal) {
-		String orderUrl = System.getenv("ORDER_URL");
+		String orderUrl = "http://"+ this.orderHost + "/report/api/v1.0/neworder";
+		LOGGER.debug("Order url: "+orderUrl);
 		HttpSession session = req.getSession();
 		ShoppingCart cart = null;
 		String userName = principal.getName();
