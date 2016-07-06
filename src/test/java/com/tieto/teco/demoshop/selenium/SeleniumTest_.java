@@ -91,12 +91,12 @@ public class SeleniumTest_ extends TestCase {
     public void testLogin() throws Exception {
     	WebElement element = null;
     	this.driver.get(appUrl);
-    	this.driver.findElement(By.xpath("/html/body/div/nav/div/div/ul/li[5]/a")).click();
+    	this.driver.findElement(By.id("menu_login")).click();
     	this.driver.findElement(By.id("email")).sendKeys("testi@testi.org");
     	this.driver.findElement(By.id("password")).sendKeys(appUserPass);
-    	this.driver.findElement(By.xpath("/html/body/div/form/div[3]/button")).click();
+    	this.driver.findElement(By.id("login_button")).click();
     	try {
-    		element = this.driver.findElement(By.xpath("/html/body/div/nav/div/div/ul/li[6]/a"));
+    		element = this.driver.findElement(By.id("menu_logout"));
     	} catch (Exception e) {
     		
     	}
@@ -110,14 +110,14 @@ public class SeleniumTest_ extends TestCase {
 		WebElement element = null;
 		this.driver.get(appUrl);
 		this.driver.findElement(
-				By.xpath("/html/body/div/nav/div/div/ul/li[5]/a")).click();
+				By.id("menu_login")).click();
 		this.driver.findElement(By.id("email")).sendKeys("testi@testi.org");
 		this.driver.findElement(By.id("password")).sendKeys("joku");
-		this.driver.findElement(By.xpath("/html/body/div/form/div[3]/button"))
+		this.driver.findElement(By.id("login_button"))
 				.click();
 		try {
 			element = this.driver.findElement(By
-					.xpath("/html/body/div/div[1]/p"));
+					.id("error_text"));
 		} catch (Exception e) {
 
 		}
@@ -129,7 +129,7 @@ public class SeleniumTest_ extends TestCase {
 	public void testProductsPage() throws Exception {
 		WebElement element = null;
 		this.driver.get(appUrl);
-		this.driver.findElement(By.xpath("/html/body/div/nav/div/div/ul/li[1]/a")).click();
+		this.driver.findElement(By.id("menu_products")).click();
 		
 		try {
 			element = this.driver.findElement(By.xpath("/html/body/div/div/table/tbody/tr[2]/td[3]"));

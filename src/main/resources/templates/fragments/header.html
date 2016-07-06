@@ -12,12 +12,12 @@
                     <a class="navbar-brand" href="#" th:href="@{/}">Home</a>
                     
                     	<ul class="nav navbar-nav">
-                        	<li><a href="#" th:href="@{/products}">Products</a></li>
-                        	<li><a th:if="${#authorization.expression('hasAuthority(''USER'')')}" th:href="@{/product/new}">Create Product</a></li>
-                        	<li><a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" th:href="@{/users}">Users</a></li>
-                        	<li><a th:if="${#authorization.expression('isAuthenticated()')} == true" th:href="@{/cart/view}">Shopping Cart</a></li>
-                        	<li><a th:if="${#authorization.expression('isAuthenticated()')} == false" th:href="@{/login}">Login / Register</a></li>
-                        	<li><a th:if="${#authorization.expression('isAuthenticated()')} == true" th:href="@{/logout}">Logout</a></li>
+                        	<li><a href="#" th:href="@{/products}" id="menu_products">Products</a></li>
+                        	<li><a th:if="${#authorization.expression('hasAuthority(''USER'')')}" th:href="@{/product/new}" id="menu_create_product">Create Product</a></li>
+                        	<li><a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" th:href="@{/users}" id="menu_users">Users</a></li>
+                        	<li><a th:if="${#authorization.expression('isAuthenticated()')} == true" th:href="@{/cart/view}" id="menu_shopping_cart">Shopping Cart</a></li>
+                        	<li><a th:if="${#authorization.expression('isAuthenticated()')} == false" th:href="@{/login}" id="menu_login">Login / Register</a></li>
+                        	<li><a th:if="${#authorization.expression('isAuthenticated()')} == true" th:href="@{/logout}" id="menu_logout">Logout</a></li>
                     	</ul>	
  					
                 </div>

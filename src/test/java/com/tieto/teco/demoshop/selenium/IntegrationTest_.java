@@ -85,29 +85,29 @@ public class IntegrationTest_ extends TestCase {
     public void testOrder() throws Exception {
     	WebElement element = null;
 		this.driver.get(appUrl);
-		this.driver.findElement(By.xpath("/html/body/div/nav/div/div/ul/li[5]/a")).click();
+		this.driver.findElement(By.id("menu_login")).click();
 		this.driver.findElement(By.id("email")).sendKeys("testi@testi.org");
 		this.driver.findElement(By.id("password")).sendKeys(appUserPass);
-		this.driver.findElement(By.xpath("/html/body/div/form/div[3]/button")).click();
+		this.driver.findElement(By.id("login_button")).click();
 		try {
-    		element = this.driver.findElement(By.xpath("/html/body/div/nav/div/div/ul/li[6]/a"));
+    		element = this.driver.findElement(By.id("menu_logout"));
     	} catch (Exception e) {
     		
     	}
     	Assert.assertNotNull(element);
     	Assert.assertEquals(element.getText(), "Logout");
     	
-    	this.driver.findElement(By.xpath("/html/body/div/nav/div/div/ul/li[1]/a")).click();
+    	this.driver.findElement(By.id("menu_products")).click();
     	this.driver.findElement(By.xpath("/html/body/div/div/table/tbody/tr[2]/td[7]/a")).click();
     	this.driver.findElement(By.xpath("/html/body/div/div/p[2]/a")).click();
     	this.driver.findElement(By.id("name")).sendKeys("Automaatti Testaaja");
     	this.driver.findElement(By.id("streetAddress")).sendKeys("Testikatu 3");
     	this.driver.findElement(By.id("postNumber")).sendKeys("12345");
     	this.driver.findElement(By.id("city")).sendKeys("Testikaupunki");
-    	this.driver.findElement(By.xpath("/html/body/div/div[2]/form/div[5]/button")).click();
+    	this.driver.findElement(By.id("order_submit")).click();
     	
     	try {
-    		element = this.driver.findElement(By.xpath("/html/body/div/h1/span"));
+    		element = this.driver.findElement(By.id("order_result"));
     	} catch (Exception e) {
     		
     	}
