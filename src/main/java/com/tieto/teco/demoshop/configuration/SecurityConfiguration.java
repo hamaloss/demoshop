@@ -29,7 +29,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		httpSecurity.authorizeRequests()
 			.antMatchers(HttpMethod.OPTIONS).denyAll()
 			.antMatchers("/", "/products", "/product/view", "/webjars/**", "/register").permitAll()
-			.antMatchers("/cart/**").authenticated()
+			.antMatchers("/cart/**","/order/**").authenticated()
 			.antMatchers("/users/**", "/user/**").hasAnyAuthority("ADMIN")
 			.antMatchers("/product/edit").hasAnyAuthority("USER","ADMIN")
 			.anyRequest().fullyAuthenticated()

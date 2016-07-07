@@ -35,6 +35,19 @@ public class Order implements Serializable {
 	@JsonProperty
 	private List<Hashtable<String,Object>> items;
 	
+	private Integer orderid;
+	private String orderStatus;
+	
+	public Order() {
+		super();
+	}
+	
+	public Order(Integer orderId, String orderStatus, List<Hashtable<String,Object>> items) {
+		this.orderid = orderId;
+		this.orderStatus = orderStatus;
+		this.items = items;
+	}
+	
 	public Order(OrderForm o, Set<Item> items) {
 		this.userName = o.getUserName();
 		this.name = o.getName();
@@ -101,6 +114,22 @@ public class Order implements Serializable {
 
 	public void setItems(List<Hashtable<String,Object>> items) {
 		this.items = items;
+	}
+
+	public Integer getOrderid() {
+		return orderid;
+	}
+
+	public void setOrderid(Integer id) {
+		this.orderid = id;
+	}
+
+	public String getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(String orderStatus) {
+		this.orderStatus = orderStatus;
 	}
 	
 	

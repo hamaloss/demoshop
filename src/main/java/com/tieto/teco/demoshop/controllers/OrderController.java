@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
@@ -27,6 +28,7 @@ import com.tieto.teco.demoshop.domain.OrderForm;
 import com.tieto.teco.demoshop.domain.ShoppingCart;
 import com.tieto.teco.demoshop.domain.User;
 import com.tieto.teco.demoshop.domain.rest.Order;
+import com.tieto.teco.demoshop.domain.rest.OrdersResult;
 import com.tieto.teco.demoshop.services.ShoppingCartService;
 import com.tieto.teco.demoshop.services.UserService;
 
@@ -69,6 +71,40 @@ public class OrderController {
 		return new ModelAndView("order", "order", order);
 	}
 	
+	@RequestMapping("order/list")
+	public ModelAndView orderList(HttpServletRequest req, Principal principal) {
+		String userName = principal.getName();
+		RestTemplate restTemplate = new RestTemplate();
+		String orderListUrl = "http://"+this.orderHost+"/report/api/v1.0/myorders/"+userName;
+		Map<String, String> vars = new HashMap<String, String>();
+		String queryId = UUID.randomUUID().toString();
+		LOGGER.debug("Making http query to backend with queryid "+queryId);
+		vars.put("id", queryId);
+		
+		OrdersResult result = restTemplate.getForObject(orderListUrl, OrdersResult.class, vars);
+		
+		return new ModelAndView("orders", "orders", result.getOrders());
+	}
+	
+	@RequestMapping("order/details/{id}")
+	public ModelAndView orderDetails(@PathVariable Long id, Principal principal) {
+		String userName = principal.getName();
+		RestTemplate restTemplate = new RestTemplate();
+		String orderUrl = "http://"+this.orderHost+"/report/api/v1.0/order/"+id.toString();
+		Map<String, String> vars = new HashMap<String, String>();
+		String queryId = UUID.randomUUID().toString();
+		LOGGER.debug("Making http query to backend with queryid "+queryId);
+		vars.put("id", queryId);
+		
+		Order order = restTemplate.getForObject(orderUrl, Order.class, vars);
+		LOGGER.debug("Username in order: "+order.getUserName());
+		if(!order.getUserName().equals(userName)) {
+			throw new ShopRestException("Not authorized", 404);
+		} 
+		return new ModelAndView("orderdetails", "order", order);
+		
+	}
+	
 	@RequestMapping(value = "order/create", method = RequestMethod.POST)
 	public ModelAndView handleOrderForm(@Valid @ModelAttribute("order") OrderForm order, BindingResult bindingResult, HttpServletRequest req, Principal principal) {
 		String orderUrl = "http://"+ this.orderHost + "/report/api/v1.0/neworder";
@@ -89,11 +125,13 @@ public class OrderController {
 		}
 
 		Map<String, String> vars = new HashMap<String, String>();
-		vars.put("id", UUID.randomUUID().toString());
+		String queryId = UUID.randomUUID().toString();
+		vars.put("id", queryId);
 		vars.put("username", userName);
 		Order o = new Order(order, cart.getItems());
 		o.setUserName(userName);
 		String orderResult = null;
+		LOGGER.debug("Making http post to backend with queryid "+queryId);
 		ResponseEntity<String> response = restTemplate.postForEntity(
 				orderUrl, o, String.class, vars);
 		if (response.getStatusCode().is2xxSuccessful()) {

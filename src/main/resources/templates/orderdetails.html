@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Demo Shop</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+
+    <h2>Order Details</h2>
+    <p>Order status: <b><span th:text="${order.orderStatus}">orderstatus</span></b></p>   
+    
+    <div th:if="${not #lists.isEmpty(order.items)}">
+    	<table class="table table-striped">
+    		<tr>
+    			<th>Count</th>
+    			<th>Product name</th>
+ 
+    		</tr>
+    		<tr th:each="item : ${order.items}">
+    			<td th:text="${item.amount}">count</td>
+    			<td th:text="${item.name}">name</td>
+    		</tr>
+    	</table>
+    </div>     
+    
+</div>
+
+</body>
+</html>
