@@ -11,16 +11,16 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
-@EnableRedisHttpSession
+//@EnableRedisHttpSession
 @SpringBootApplication
 public class DemoShopApp implements CommandLineRunner {
 	
 	@Autowired
 	private DataSource dataSource;
 	
-	@Autowired
-	@Qualifier("main_app-redis")
-	RedisConnectionFactory rcf;
+//	@Autowired
+//	@Qualifier("main_app-redis")
+//	RedisConnectionFactory rcf;
 	
 	public void run(String... args) throws Exception {
 		org.apache.tomcat.jdbc.pool.DataSource tomcat = (org.apache.tomcat.jdbc.pool.DataSource) dataSource;
